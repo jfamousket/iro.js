@@ -4,7 +4,7 @@ import IroComponent from 'ui/component';
 import IroHandle from 'ui/handle';
 import { resolveUrl, createArcPath } from '../util/svg';
 
-const HUE_STEPS = Array.apply(null, {length: 360}).map((_, index) => index);
+const HUE_STEPS = Array.apply(null, { length: 360 }).map((_, index) => index);
 
 export default class IroWheel extends IroComponent {
 
@@ -22,73 +22,72 @@ export default class IroWheel extends IroComponent {
   }
 
   render(props) {
-    let { width, borderWidth, handleRadius } = props;
+    let { width, borderWidth, handleRadius, height, wheelStyle } = props;
     const hsv = props.color.hsv;
     const radius = (width / 2) - borderWidth;
     const handleAngle = this._transformAngle(hsv.h, true) * (Math.PI / 180);
     const handleDist = (hsv.s / 100) * (radius - props.padding - handleRadius - borderWidth);
     const cX = radius + borderWidth;
     const cY = radius + borderWidth;
-    
+
     return (
-      <svg 
+      <svg
         class="iro__wheel"
-        width={ width }
-        height={ width }
-        style={{
-          overflow: 'visible',
-          display: 'block'
-        }}
+        width={width}
+        height={height}
+        style={wheelStyle}
       >
         <defs>
-          <radialGradient id={ this.uid }>
-            <stop offset="0%" stop-color="#fff"/>
-            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+          <radialGradient id={this.uid}>
+            <stop offset="0%" stop-color="#fff" />
+            <stop offset="100%" stop-color="#fff" stop-opacity="0" />
           </radialGradient>
         </defs>
-        <g class="iro__wheel__hue" stroke-width={ radius } fill="none">
-          { HUE_STEPS.map(angle => (
-            <path 
-              key={ angle }
-              d={ createArcPath(cX, cY, radius / 2, angle, angle + 1.5) } 
-              stroke={ `hsl(${this._transformAngle(angle)}, 100%, 50%)` }
+        <g class="iro__wheel__hue" stroke-width={radius} fill="none">
+          {HUE_STEPS.map(angle => (
+            <path
+              key={angle}
+              d={createArcPath(cX, cY, radius / 2, angle, angle + 1.5)}
+              stroke={`hsl(${this._transformAngle(angle)}, 100%, 50%)`}
             />
           ))}
         </g>
-        <circle 
+        <circle
           class="iro__wheel__saturation"
-          cx={ cX }
-          cy={ cY }
-          r={ radius }
-          fill={ `url(${resolveUrl('#' + this.uid)})` }
+          cx={cX}
+          cy={cY}
+          r={radius}
+          fill={`url(${resolveUrl('#' + this.uid)})`}
         />
-        { props.wheelLightness && (
-          <circle 
-            class="iro__wheel__lightness"
-            cx={ cX }
-            cy={ cY }
-            r={ radius }
-            fill="#000"
-            opacity={ 1 - hsv.v / 100 }
-          />
-        )}
-        <circle 
+        {
+          props.wheelLightness && (
+            <circle
+              class="iro__wheel__lightness"
+              cx={cX}
+              cy={cY}
+              r={radius}
+              fill="#000"
+              opacity={1 - hsv.v / 100}
+            />
+          )
+        }
+        <circle
           class="iro__wheel__border"
-          cx={ cX }
-          cy={ cY }
-          r={ radius }
+          cx={cX}
+          cy={cY}
+          r={radius}
           fill="none"
-          stroke={ props.borderColor }
-          stroke-width={ borderWidth }
+          stroke={props.borderColor}
+          stroke-width={borderWidth}
         />
-        <IroHandle 
-          r={ handleRadius }
-          url={ props.handleSvg }
-          origin={ props.handleOrigin }
-          x={ cX + handleDist * Math.cos(handleAngle) }
-          y={ cY + handleDist * Math.sin(handleAngle) }
+        <IroHandle
+          r={handleRadius}
+          url={props.handleSvg}
+          origin={props.handleOrigin}
+          x={cX + handleDist * Math.cos(handleAngle)}
+          y={cY + handleDist * Math.sin(handleAngle)}
         />
-      </svg>
+      </svg >
     );
   }
 
