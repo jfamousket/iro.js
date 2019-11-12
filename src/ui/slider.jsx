@@ -14,37 +14,37 @@ export default class IroSlider extends IroComponent {
     switch (props.sliderType) {
       case 'hue':
         stops = [
-          {offset: '0',      color: '#f00'},
-          {offset: '16.666', color: '#ff0'},
-          {offset: '33.333', color: '#0f0'},
-          {offset: '50',     color: '#0ff'},
-          {offset: '66.666', color: '#00f'},
-          {offset: '83.333', color: '#f0f'},
-          {offset: '100',    color: '#f00'},
+          { offset: '0', color: '#f00' },
+          { offset: '16.666', color: '#ff0' },
+          { offset: '33.333', color: '#0f0' },
+          { offset: '50', color: '#0ff' },
+          { offset: '66.666', color: '#00f' },
+          { offset: '83.333', color: '#f0f' },
+          { offset: '100', color: '#f00' },
         ];
         break;
       case 'saturation':
-        var noSat = IroColor.hsvToHsl({h: hsv.h, s: 0, v: hsv.v});
-        var fullSat = IroColor.hsvToHsl({h: hsv.h, s: 100, v: hsv.v});
+        var noSat = IroColor.hsvToHsl({ h: hsv.h, s: 0, v: hsv.v });
+        var fullSat = IroColor.hsvToHsl({ h: hsv.h, s: 100, v: hsv.v });
         stops = [
-          {offset: '0', color: `hsl(${noSat.h}, ${noSat.s}%, ${noSat.l}%)`},
-          {offset: '100', color: `hsl(${fullSat.h}, ${fullSat.s}%, ${fullSat.l}%)`}
+          { offset: '0', color: `hsl(${noSat.h}, ${noSat.s}%, ${noSat.l}%)` },
+          { offset: '100', color: `hsl(${fullSat.h}, ${fullSat.s}%, ${fullSat.l}%)` }
         ];
         break;
       case 'value':
       default:
-        var hsl = IroColor.hsvToHsl({h: hsv.h, s: hsv.s, v: 100});
+        var hsl = IroColor.hsvToHsl({ h: hsv.h, s: hsv.s, v: 100 });
         stops = [
-          {offset: '0', color: '#000'},
-          {offset: '100', color: `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`}
+          { offset: '0', color: '#000' },
+          { offset: '100', color: `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)` }
         ];
         break;
     }
 
     return (
-      <linearGradient id={ this.uid }>
+      <linearGradient id={this.uid}>
         {stops.map(stop => (
-          <stop offset={`${stop.offset}%`} stop-color={ stop.color } />
+          <stop offset={`${stop.offset}%`} stop-color={stop.color} />
         ))}
       </linearGradient>
     )
@@ -58,7 +58,7 @@ export default class IroSlider extends IroComponent {
     const cornerRadius = sliderHeight / 2;
     const range = width - cornerRadius * 2
     const hsv = props.color.hsv;
-    
+
     let sliderValue;
     switch (props.sliderType) {
       case 'hue':
@@ -74,37 +74,37 @@ export default class IroSlider extends IroComponent {
     }
 
     return (
-      <svg 
+      <svg
         class="iro__slider"
-        width={ width }
-        height={ sliderHeight }
-        style= {{
+        // width={width}
+        // height={sliderHeight}
+        style={{
           marginTop: props.sliderMargin,
           overflow: 'visible',
-          display: 'block'
+          display: 'flex'
         }}
       >
         <defs>
-          { this.renderGradient(props) }
+          {this.renderGradient(props)}
         </defs>
-        <rect 
+        <rect
           class="iro__slider__value"
-          rx={ cornerRadius } 
-          ry={ cornerRadius } 
-          x={ borderWidth / 2 } 
-          y={ borderWidth / 2 } 
-          width={ width - borderWidth } 
-          height={ sliderHeight - borderWidth }
-          stroke-width={ borderWidth }
-          stroke={ props.borderColor }
-          fill={ `url(${resolveUrl('#' + this.uid)})` }
+          rx={cornerRadius}
+          ry={cornerRadius}
+          x={borderWidth / 2}
+          y={borderWidth / 2}
+          width={width - borderWidth}
+          height={sliderHeight - borderWidth}
+          stroke-width={borderWidth}
+          stroke={props.borderColor}
+          fill={`url(${resolveUrl('#' + this.uid)})`}
         />
         <IroHandle
-          r={ handleRadius }
-          url={ props.handleSvg }
-          origin={ props.handleOrigin }
-          x={ cornerRadius + (sliderValue / 100) * range }
-          y={ sliderHeight / 2 }
+          r={handleRadius}
+          url={props.handleSvg}
+          origin={props.handleOrigin}
+          x={cornerRadius + (sliderValue / 100) * range}
+          y={sliderHeight / 2}
         />
       </svg>
     );

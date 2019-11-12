@@ -31,8 +31,8 @@ class ColorPicker extends Component {
       this.layout = props.layout;
     } else {
       this.layout = [
-        {component: IroWheel, options: {}},
-        {component: IroSlider, options: {}},
+        { component: IroWheel, options: {} },
+        { component: IroSlider, options: {} },
       ];
     }
     this.emitHook('init:after');
@@ -58,7 +58,7 @@ class ColorPicker extends Component {
       if (this._deferredEvents[eventType]) {
         // Deffered events store an array of arguments from when the event was called
         this._deferredEvents[eventType].forEach(args => {
-          callback.apply(null, args); 
+          callback.apply(null, args);
         });
         // Clear deferred events
         this._deferredEvents[eventType] = [];
@@ -89,7 +89,7 @@ class ColorPicker extends Component {
     this.emitHook(eventType, ...args);
     const callbackList = this._events[eventType] || [];
     for (let i = 0; i < callbackList.length; i++) {
-      callbackList[i].apply(this, args); 
+      callbackList[i].apply(this, args);
     }
   }
 
@@ -111,7 +111,7 @@ class ColorPicker extends Component {
    * @param {Number} width
    */
   resize(width) {
-    this.setState({width});
+    this.setState({ width });
   }
 
   /**
@@ -141,7 +141,7 @@ class ColorPicker extends Component {
   emitHook(hookType, ...args) {
     const callbackList = ColorPicker.pluginHooks[hookType] || [];
     for (let i = 0; i < callbackList.length; i++) {
-      callbackList[i].apply(this, args); 
+      callbackList[i].apply(this, args);
     }
   }
 
@@ -174,7 +174,7 @@ class ColorPicker extends Component {
       // If the color change originates from user input, fire input:change
       if (this._colorUpdateSrc == 'input') { // colorUpdateSrc is cleared in handeInput()
         this.emit('input:change', color, changes);
-      } 
+      }
       // Always fire color:change event
       this.emit('color:change', color, changes);
       this._colorUpdateActive = false;
@@ -205,20 +205,20 @@ class ColorPicker extends Component {
 
   render(props, state) {
     return (
-      <div 
+      <div
         class="iro__colorPicker"
-        id={ props.id }
+        id={props.id}
         style={{
           display: state.display,
           width: state.width
         }}
       >
-        {this.layout.map(({component: UiComponent, options: options}) => (
+        {this.layout.map(({ component: UiComponent, options: options }) => (
           <UiComponent
             {...state}
             {...options}
-            onInput={ (type, hsv) => this.handleInput(type, hsv) }
-            parent={ this }
+            onInput={(type, hsv) => this.handleInput(type, hsv)}
+            parent={this}
           />
         ))}
       </div>
@@ -233,7 +233,7 @@ ColorPicker.defaultProps = {
   height: 300,
   handleRadius: 8,
   handleSvg: null,
-  handleOrigin: {x: 0, y: 0},
+  handleOrigin: { x: 0, y: 0 },
   color: '#fff',
   borderColor: '#fff',
   borderWidth: 0,
@@ -246,6 +246,12 @@ ColorPicker.defaultProps = {
   sliderMargin: 12,
   padding: 6,
   layout: null,
+  wheelStyle: {
+    overflow: 'visible',
+    display: 'flex',
+    height: "100vh",
+    flex: 1
+  }
 }
 
 export default createWidget(ColorPicker);

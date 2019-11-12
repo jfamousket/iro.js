@@ -923,7 +923,6 @@
 	    var borderWidth = props.borderWidth;
 	    var handleRadius = props.handleRadius;
 	    var height = props.height;
-	    var wheelStyle = props.wheelStyle;
 	    var hsv = props.color.hsv;
 	    var radius = (width / 2) - borderWidth;
 	    var handleAngle = this._transformAngle(hsv.h, true) * (Math.PI / 180);
@@ -933,7 +932,10 @@
 
 	    return (
 	      h( 'svg', {
-	        class: "iro__wheel", width: width, height: height, style: wheelStyle }, 
+	        class: "iro__wheel", width: width, height: height, style: {
+	          overflow: 'visible',
+	          display: 'block'
+	        } }, 
 	        h( 'defs', null, 
 	          h( 'radialGradient', { id: this.uid }, 
 	            h( 'stop', { offset: "0%", 'stop-color': "#fff" }), 
@@ -949,9 +951,9 @@
 	        h( 'circle', {
 	          class: "iro__wheel__saturation", cx: cX, cy: cY, r: radius, fill: ("url(" + (resolveUrl('#' + this.uid)) + ")") }), 
 	        props.wheelLightness && (
-	            h( 'circle', {
-	              class: "iro__wheel__lightness", cx: cX, cy: cY, r: radius, fill: "#000", opacity: 1 - hsv.v / 100 })
-	          ), 
+	          h( 'circle', {
+	            class: "iro__wheel__lightness", cx: cX, cy: cY, r: radius, fill: "#000", opacity: 1 - hsv.v / 100 })
+	        ), 
 	        h( 'circle', {
 	          class: "iro__wheel__border", cx: cX, cy: cY, r: radius, fill: "none", stroke: props.borderColor, 'stroke-width': borderWidth }), 
 	        h( IroHandle, {
@@ -1381,28 +1383,28 @@
 	    switch (props.sliderType) {
 	      case 'hue':
 	        stops = [
-	          { offset: '0', color: '#f00' },
-	          { offset: '16.666', color: '#ff0' },
-	          { offset: '33.333', color: '#0f0' },
-	          { offset: '50', color: '#0ff' },
-	          { offset: '66.666', color: '#00f' },
-	          { offset: '83.333', color: '#f0f' },
-	          { offset: '100', color: '#f00' } ];
+	          {offset: '0',      color: '#f00'},
+	          {offset: '16.666', color: '#ff0'},
+	          {offset: '33.333', color: '#0f0'},
+	          {offset: '50',     color: '#0ff'},
+	          {offset: '66.666', color: '#00f'},
+	          {offset: '83.333', color: '#f0f'},
+	          {offset: '100',    color: '#f00'} ];
 	        break;
 	      case 'saturation':
-	        var noSat = Color.hsvToHsl({ h: hsv.h, s: 0, v: hsv.v });
-	        var fullSat = Color.hsvToHsl({ h: hsv.h, s: 100, v: hsv.v });
+	        var noSat = Color.hsvToHsl({h: hsv.h, s: 0, v: hsv.v});
+	        var fullSat = Color.hsvToHsl({h: hsv.h, s: 100, v: hsv.v});
 	        stops = [
-	          { offset: '0', color: ("hsl(" + (noSat.h) + ", " + (noSat.s) + "%, " + (noSat.l) + "%)") },
-	          { offset: '100', color: ("hsl(" + (fullSat.h) + ", " + (fullSat.s) + "%, " + (fullSat.l) + "%)") }
+	          {offset: '0', color: ("hsl(" + (noSat.h) + ", " + (noSat.s) + "%, " + (noSat.l) + "%)")},
+	          {offset: '100', color: ("hsl(" + (fullSat.h) + ", " + (fullSat.s) + "%, " + (fullSat.l) + "%)")}
 	        ];
 	        break;
 	      case 'value':
 	      default:
-	        var hsl = Color.hsvToHsl({ h: hsv.h, s: hsv.s, v: 100 });
+	        var hsl = Color.hsvToHsl({h: hsv.h, s: hsv.s, v: 100});
 	        stops = [
-	          { offset: '0', color: '#000' },
-	          { offset: '100', color: ("hsl(" + (hsl.h) + ", " + (hsl.s) + "%, " + (hsl.l) + "%)") }
+	          {offset: '0', color: '#000'},
+	          {offset: '100', color: ("hsl(" + (hsl.h) + ", " + (hsl.s) + "%, " + (hsl.l) + "%)")}
 	        ];
 	        break;
 	    }
@@ -1427,7 +1429,7 @@
 	    var cornerRadius = sliderHeight / 2;
 	    var range = width - cornerRadius * 2;
 	    var hsv = props.color.hsv;
-
+	    
 	    var sliderValue;
 	    switch (props.sliderType) {
 	      case 'hue':
@@ -1443,16 +1445,16 @@
 	    }
 
 	    return (
-	      h( 'svg', {
-	        class: "iro__slider", style: {
+	      h( 'svg', { 
+	        class: "iro__slider", width: width, height: sliderHeight, style: {
 	          marginTop: props.sliderMargin,
 	          overflow: 'visible',
-	          display: 'flex'
+	          display: 'block'
 	        } }, 
 	        h( 'defs', null, 
 	          this.renderGradient(props)
 	        ), 
-	        h( 'rect', {
+	        h( 'rect', { 
 	          class: "iro__slider__value", rx: cornerRadius, ry: cornerRadius, x: borderWidth / 2, y: borderWidth / 2, width: width - borderWidth, height: sliderHeight - borderWidth, 'stroke-width': borderWidth, stroke: props.borderColor, fill: ("url(" + (resolveUrl('#' + this.uid)) + ")") }), 
 	        h( IroHandle, {
 	          r: handleRadius, url: props.handleSvg, origin: props.handleOrigin, x: cornerRadius + (sliderValue / 100) * range, y: sliderHeight / 2 })
@@ -1567,8 +1569,8 @@
 	      this.layout = props.layout;
 	    } else {
 	      this.layout = [
-	        { component: IroWheel, options: {} },
-	        { component: IroSlider, options: {} } ];
+	        {component: IroWheel, options: {}},
+	        {component: IroSlider, options: {}} ];
 	    }
 	    this.emitHook('init:after');
 	  }
@@ -1599,7 +1601,7 @@
 	      if (this$1._deferredEvents[eventType]) {
 	        // Deffered events store an array of arguments from when the event was called
 	        this$1._deferredEvents[eventType].forEach(function (args) {
-	          callback.apply(null, args);
+	          callback.apply(null, args); 
 	        });
 	        // Clear deferred events
 	        this$1._deferredEvents[eventType] = [];
@@ -1636,7 +1638,7 @@
 	    (ref = this).emitHook.apply(ref, [ eventType ].concat( args ));
 	    var callbackList = this._events[eventType] || [];
 	    for (var i = 0; i < callbackList.length; i++) {
-	      callbackList[i].apply(this, args);
+	      callbackList[i].apply(this, args); 
 	    }
 	  };
 
@@ -1662,7 +1664,7 @@
 	   * @param {Number} width
 	   */
 	  ColorPicker.prototype.resize = function resize (width) {
-	    this.setState({ width: width });
+	    this.setState({width: width});
 	  };
 
 	  /**
@@ -1695,7 +1697,7 @@
 
 	    var callbackList = ColorPicker.pluginHooks[hookType] || [];
 	    for (var i = 0; i < callbackList.length; i++) {
-	      callbackList[i].apply(this, args);
+	      callbackList[i].apply(this, args); 
 	    }
 	  };
 
@@ -1728,7 +1730,7 @@
 	      // If the color change originates from user input, fire input:change
 	      if (this._colorUpdateSrc == 'input') { // colorUpdateSrc is cleared in handeInput()
 	        this.emit('input:change', color, changes);
-	      }
+	      } 
 	      // Always fire color:change event
 	      this.emit('color:change', color, changes);
 	      this._colorUpdateActive = false;
@@ -1761,7 +1763,7 @@
 	    var this$1 = this;
 
 	    return (
-	      h( 'div', {
+	      h( 'div', { 
 	        class: "iro__colorPicker", id: props.id, style: {
 	          display: state.display,
 	          width: state.width
@@ -1789,7 +1791,7 @@
 	  height: 300,
 	  handleRadius: 8,
 	  handleSvg: null,
-	  handleOrigin: { x: 0, y: 0 },
+	  handleOrigin: {x: 0, y: 0},
 	  color: '#fff',
 	  borderColor: '#fff',
 	  borderWidth: 0,
@@ -1802,12 +1804,6 @@
 	  sliderMargin: 12,
 	  padding: 6,
 	  layout: null,
-	  wheelStyle: {
-	    overflow: 'visible',
-	    display: 'flex',
-	    height: "100vh",
-	    flex: 1
-	  }
 	};
 
 	var ColorPicker$1 = createWidget(ColorPicker);
