@@ -237,7 +237,7 @@ ColorPicker.defaultProps = {
   color: '#fff',
   borderColor: '#fff',
   borderWidth: 0,
-  display: 'block',
+  display: 'flex',
   id: null,
   wheelLightness: true,
   wheelAngle: 0,
